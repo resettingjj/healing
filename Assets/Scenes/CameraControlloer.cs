@@ -10,6 +10,11 @@ public class CameraController : MonoBehaviour
     private Camera mainCamera;
     public float zoomSpeed = 3.0f;
     public float limit;
+    public float scrollSpeed = 5f; // 스크롤 속도
+    public float minX = -10f;      // X 축 최소값
+    public float maxX = 10f;       // X 축 최대값
+    private Vector3 dragOrigin;
+
 
     void Start()
     {
@@ -19,14 +24,46 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float distance = Input.GetAxis("Mouse ScrollWheel") * -1 * zoomSpeed;
-        if (distance != 0)
+        float scrollInput = Input.GetAxis("Mouse ScrollWheel") * -1 * zoomSpeed;
+
+        // 카메라의 현재 위치 가져오기
+        Vector3 cameraPosition = mainCamera.transform.position;
+
+        // 카메라의 z축 위치 조정
+        cameraPosition.z += scrollInput;
+
+        // z축 위치를 최소 및 최대 값으로 제한
+        cameraPosition.z = Mathf.Clamp(cameraPosition.z, 3.7f, 8.7f);
+
+        // 조정된 위치를 카메라에 적용
+        mainCamera.transform.position = cameraPosition;
+        if (Input.GetMouseButtonDown(2))
         {
-            mainCamera.fieldOfView += distance;
-            if (mainCamera.fieldOfView > 100)
-                mainCamera.fieldOfView = 100;
-            if (mainCamera.fieldOfView < 5)
-                mainCamera.fieldOfView = 5;
+            // 드래그 시작 위치 저장
+            dragOrigin = Input.mousePosition;
+        }
+
+        // 마우스 휠 버튼이 클릭된 상태에서만 드래그
+        if (Input.GetMouseButton(2))
+        {
+            // 드래그 방향과 속도 계산
+            Vector3 dragDelta = Input.mousePosition - dragOrigin;
+            Vector3 move = new Vector3(dragDelta.x, -dragDelta.y, 0) * 0.1f * Time.deltaTime;
+
+            // 카메라 위치 업데이트
+            transform.Translate(move, Space.World);
+
+            // 카메라 위치 제한
+            Vector3 clampedPosition = transform.position;
+            float wheel = 1/(mainCamera.transform.position.z - 2.7f);
+            clampedPosition.x = Mathf.Clamp(clampedPosition.x, minX/wheel, maxX / wheel);
+            clampedPosition.y = Mathf.Clamp(clampedPosition.y, minX/2 / wheel, maxX/2 / wheel);
+            transform.position = clampedPosition;
+
+            // 드래그 시작 위치 갱신
+            dragOrigin = Input.mousePosition;
         }
     }
+
+
 }

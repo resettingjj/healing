@@ -7,7 +7,7 @@ public class Rotater : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(1))
         {
             transform.Rotate(0f, -Input.GetAxis("Mouse X") * speed, 0f, Space.World);
             transform.Rotate(-Input.GetAxis("Mouse Y") * speed, 0f, 0f);

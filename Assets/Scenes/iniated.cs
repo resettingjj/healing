@@ -4,19 +4,21 @@ using UnityEngine;
 
 public class iniated : MonoBehaviour
 {
-    public GameObject player;
     public GameObject wound;
+    private GameObject pain;
     // Start is called before the first frame update
     void Awake()
     {
-        Instantiate(player, new Vector3(0,0,0), Quaternion.identity);
         for (int i = 0; i < 10; i++)
         {
-            Vector3 targetPosition = new Vector3(Random.Range(2.0f, 4.0f), 0, Random.Range(2.0f, 4.0f));
+            float angle = Random.Range(0f, 360f);
+            // 선택된 각도에 따른 위치 계산
+            Vector3 targetPosition = Quaternion.Euler(0, angle, 0) * Vector3.forward * Random.Range(3f, 5f);
+
+            pain = Instantiate(wound, targetPosition, Quaternion.identity);
+            pain.name = "wound"+ i;
         }
     }
-
-
     // Update is called once per frame
     void Update()
     {
