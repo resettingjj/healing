@@ -12,13 +12,12 @@ public class Wound : MonoBehaviour
 {
     public float[] y;
     public int i;
-    public GameObject parentObject;
     public string[] sick;
     public string pain;
-    public GameObject childObject;
     public Collider Collider1;
     // Start is called before the first frame update
 
+    
     
     void Awake()
     {
@@ -29,7 +28,7 @@ public class Wound : MonoBehaviour
         if (Physics.Raycast(transform.position, new Vector3(0, transform.position.y, 0) - transform.position, out hit, 20f))
         {
             transform.position = hit.point + hit.normal * 0.01f;
-            transform.parent = parentObject.transform;
+            transform.parent = hit.collider.gameObject.transform;
             transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
         }else
         {
@@ -37,9 +36,6 @@ public class Wound : MonoBehaviour
         }
         Collider1.enabled = true;
     }
-
-     void Update()
-    {
-    }
+    
 }
 

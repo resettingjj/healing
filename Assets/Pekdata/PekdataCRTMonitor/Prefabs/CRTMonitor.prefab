@@ -321,7 +321,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4873767151410162
 Transform:
   m_ObjectHideFlags: 0
@@ -10380,10 +10380,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb990f5239e00bed89c1dff40c1be218, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  screenExplosionParticleSystem: {fileID: 1933960111588844}
-  screenOff: {fileID: 1503309550545730}
-  screenOn: {fileID: 1301780834733650}
-  shards: {fileID: 1279047784018206}
+  mainCamera: {fileID: 0}
 --- !u!1 &1709236654553450
 GameObject:
   m_ObjectHideFlags: 0

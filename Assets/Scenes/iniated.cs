@@ -5,6 +5,8 @@ using UnityEngine;
 public class iniated : MonoBehaviour
 {
     public GameObject wound;
+    public GameObject player;
+    public int status;
     private GameObject pain;
     // Start is called before the first frame update
     void Awake()
@@ -18,10 +20,6 @@ public class iniated : MonoBehaviour
             pain = Instantiate(wound, targetPosition, Quaternion.identity);
             pain.name = "wound"+ i;
         }
-    }
-    // Update is called once per frame
-    void Update()
-    {
         
     }
 }
