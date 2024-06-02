@@ -62,7 +62,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 935677446527359518}
-  - component: {fileID: 8579229148147206350}
   - component: {fileID: 6702085939050862156}
   m_Layer: 0
   m_Name: player
@@ -87,18 +86,6 @@ Transform:
   - {fileID: 8675920369047186110}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8579229148147206350
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5058156114298025374}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee68d74c4c57f854bb2c50f4ab4a0201, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &6702085939050862156
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112,6 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Camera: {fileID: 0}
+  stat: 0
 --- !u!1 &6718483144280727108
 GameObject:
   m_ObjectHideFlags: 0

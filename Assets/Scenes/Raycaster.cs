@@ -9,6 +9,7 @@ public class Raycaster : MonoBehaviour
     // Start is called before the first frame update
     public TextMeshProUGUI statusText;
     public GameObject Canvas;
+    public Camera cam;
     void Start()
     {
         
@@ -17,8 +18,7 @@ public class Raycaster : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
+        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
         {
