@@ -17,9 +17,9 @@ public class NewBehaviourScript1 : MonoBehaviour
     void Update()
     {
         
-        if (300 > manager.i && manager.i > 150)
+        if (150 > manager.i && manager.i > 75)
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(new Vector3(0,180,0)), 2f * Time.deltaTime);
-        if (manager.i > 300)
+        if (manager.i > 150)
             transform.rotation = Quaternion.Lerp(transform.rotation, rotate, 2f * Time.deltaTime);
     }
 }

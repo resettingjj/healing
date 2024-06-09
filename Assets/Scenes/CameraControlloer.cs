@@ -28,9 +28,9 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (manager.i == 330)
+        if (manager.i == 165)
             mainCamera.transform.position = new Vector3(0, 0, 4);
-        if (manager.i > 330)
+        if (manager.i > 165)
         {
             float scrollInput = Input.GetAxis("Mouse ScrollWheel") * -1 * zoomSpeed;
 

@@ -40,13 +40,13 @@ public class inHospital : MonoBehaviour
         if (stat == 1) 
         {
             transform.Translate(Vector3.forward*speed);
-            if (statusController.i == 150)
+            if (statusController.i == 75)
                 transform.rotation = Quaternion.Euler(new Vector3(0, 270, 0));
-            if(statusController.i == 220)
+            if(statusController.i == 110)
                 transform.rotation = Quaternion.Euler(Vector3.zero);
-            if(statusController.i == 320)
+            if(statusController.i == 160)
                 transform.rotation = Quaternion.Euler(new Vector3(0, 270, 0));
-            if (statusController.i == 330)
+            if (statusController.i == 165)
             {
                 transform.position = new Vector3(transform.position.x, -1.53f, transform.position.z);
                 transform.rotation = Quaternion.Euler(Vector3.zero);
