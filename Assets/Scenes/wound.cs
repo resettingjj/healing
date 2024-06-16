@@ -14,9 +14,10 @@ public class Wound : MonoBehaviour
     public int i;
     public string[] sick;
     public string pain;
+    public string paintype;
     public Collider Collider1;
     private iniated manager;
-    public Dictionary<string, float> status = new Dictionary<string, float>();
+    public Dictionary<string, int> status = new Dictionary<string, int>();
     // Start is called before the first frame update
 
     
@@ -28,8 +29,9 @@ public class Wound : MonoBehaviour
         {
             i = Random.Range(0, y.Length / 2 - 1);
             transform.position = new Vector3(transform.position.x, Random.Range(y[i * 2], y[i * 2 + 1]), transform.position.z);
+            LayerMask mask = LayerMask.GetMask("body");
             RaycastHit hit;
-            if (Physics.Raycast(transform.position, new Vector3(0, transform.position.y, 0) - transform.position, out hit, 20f))
+            if (Physics.Raycast(transform.position, new Vector3(0, transform.position.y, 0) - transform.position, out hit, 20f, mask))
             {
                 transform.position = hit.point + hit.normal * 0.01f;
                 pain = hit.collider.gameObject.name;
@@ -37,11 +39,12 @@ public class Wound : MonoBehaviour
                    pain = pain + "_pront";
                 else
                    pain = pain + "_back";
+                paintype = new List<string>(new string[] {"상처", "화상", "골절", "근육파열"})[Random.Range(0, 4)];
                 status.Add("통증", Random.Range(1,10));
-                status.Add("염증", Random.Range(1, 10));
-                status.Add("면역력 약화", Random.Range(1, 10));
-                status.Add("경직", Random.Range(1, 10));
-                status.Add("근육 약화", Random.Range(1, 10));
+                status.Add("감염", Random.Range(-5, 23)/7);
+                status.Add("면역력 약화", Random.Range(-2, 18)/3);
+                status.Add("경직", Random.Range(-1, 10)/2);
+                status.Add("근육 약화", Random.Range(0, 10)/3);
 
                 transform.parent = hit.collider.gameObject.transform;
                 transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);

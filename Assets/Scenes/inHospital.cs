@@ -9,6 +9,7 @@ public class inHospital : MonoBehaviour
     public GameObject Camera;
     Animator animator;
     public  float speed;
+    public float dragspeed;
     private iniated statusController;
     public int stat;
     // Start is called before the first frame update
@@ -42,11 +43,11 @@ public class inHospital : MonoBehaviour
             transform.Translate(Vector3.forward*speed);
             if (statusController.i == 75)
                 transform.rotation = Quaternion.Euler(new Vector3(0, 270, 0));
-            if(statusController.i == 110)
+            if(statusController.i == 110 && speed != 0)
                 transform.rotation = Quaternion.Euler(Vector3.zero);
-            if(statusController.i == 160)
+            if(statusController.i == 160 && speed != 0)
                 transform.rotation = Quaternion.Euler(new Vector3(0, 270, 0));
-            if (statusController.i == 165)
+            if (statusController.i == 165 && speed != 0)
             {
                 transform.position = new Vector3(transform.position.x, -1.53f, transform.position.z);
                 transform.rotation = Quaternion.Euler(Vector3.zero);
@@ -59,8 +60,8 @@ public class inHospital : MonoBehaviour
         {
             if (Input.GetMouseButton(1))
             {
-                transform.Rotate(0f, -Input.GetAxis("Mouse X") * speed*15f, 0f, Space.World);
-                transform.Rotate(-Input.GetAxis("Mouse Y") * speed*15f, 0f, 0f);
+                transform.Rotate(0f, -Input.GetAxis("Mouse X") * dragspeed*15f, 0f, Space.World);
+                transform.Rotate(-Input.GetAxis("Mouse Y") * dragspeed*15f, 0f, 0f);
             }
         }
     }

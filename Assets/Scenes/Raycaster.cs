@@ -31,8 +31,8 @@ public class Raycaster : MonoBehaviour
         RaycastHit hit;
 
         // 라인 렌더러를 사용하여 레이 그리기
-        //lineRenderer.SetPosition(0, ray.origin);
-        //lineRenderer.SetPosition(1, ray.origin + ray.direction * 10.0f);
+        lineRenderer.SetPosition(0, ray.origin);
+        lineRenderer.SetPosition(1, ray.origin + ray.direction * 10.0f);
 
         if (Physics.Raycast(ray, out hit))
         {
