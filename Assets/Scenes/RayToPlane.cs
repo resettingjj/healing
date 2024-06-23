@@ -12,6 +12,9 @@ public class RayFromOneCameraToAnother : MonoBehaviour
     public LineRenderer lineRenderer;
     private iniated manager;
     private Component Outline;
+    public Vector3 second_camera_trandform;
+    public Vector3 second_camera_start;
+    public Vector3 rayDirection;
 
     private void Start()
     {
@@ -20,11 +23,9 @@ public class RayFromOneCameraToAnother : MonoBehaviour
     }
     void Update()
     {
-        // 마우스 왼쪽 버튼을 클릭했을 때
-        // 첫 번째 카메라에서 마우스 위치로 Ray를 쏩니다
         Ray firstRay = firstCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-        Debug.DrawRay(firstRay.origin, firstRay.direction * 10.0f, Color.red);
+        Debug.DrawRay(firstRay.origin, firstRay.direction * 15.0f, Color.red);
 
         // 작은 plane의 로컬 좌표를 기준으로 Ray를 쏩니다
         if (Physics.Raycast(firstRay, out hit))
@@ -42,38 +43,51 @@ public class RayFromOneCameraToAnother : MonoBehaviour
             Vector3 localHitPoint = smallPlane.InverseTransformPoint(hit.point);
             float screenX = localHitPoint.x * (firstCamera.pixelWidth/2/5f);
             float screenY = localHitPoint.z * (firstCamera.pixelHeight/2/5f);
-
-            // 작은 plane의 크기를 고려하여 스케일 값을 조정합니다
-
-            // 작은 plane의 중심 좌표를 기준으로 스크린 좌표를 계산합니다
-            Vector3 planeCenter = smallPlane.position;
-            Vector3 planePositionOnScreen = firstCamera.WorldToScreenPoint(planeCenter);
-            // 첫 번째 카메라의 월드 좌표를 두 번째 카메라의 스크린 좌표로 변환합니다
-            Vector3 secondScreenPoint = secondCamera.WorldToScreenPoint(localHitPoint);
-
-            // 두 번째 카메라에서 해당 스크린 좌표로 새로운 Ray를 생성합니다
-            Ray secondRay = secondCamera.ScreenPointToRay(new Vector2(-screenX+ (firstCamera.pixelWidth/2), -screenY+(firstCamera.pixelHeight / 1.9f)));
-            RaycastHit secondHit;
-            //Debug.DrawRay(secondRay.origin, secondRay.direction * 10.0f, Color.red);
-            // 두 번째 카메라의 Ray가 Collider에 닿았는지 확인합니다
-            if (Physics.Raycast(secondRay, out secondHit))
+            Ray secondRay = secondCamera.ScreenPointToRay(new Vector2((-screenX+ (firstCamera.pixelWidth/2f))/firstCamera.pixelWidth*secondCamera.pixelWidth, (-screenY+(firstCamera.pixelHeight / 2f)) / firstCamera.pixelWidth * secondCamera.pixelWidth));
+            RaycastHit[] secondhit;
+            secondhit = Physics.RaycastAll(secondRay, 15);
+            Debug.DrawRay(secondRay.origin, secondRay.direction * 15.0f, Color.red);
+            int k = 0;
+            foreach (RaycastHit secondHit in secondhit)
             {
-                // 두 번째 카메라에서의 충돌 지점을 얻습니다
-                if (secondHit.transform.CompareTag("Damaged"))
+                switch(secondHit.transform.tag)
                 {
-                    painText.text = secondHit.transform.GetComponent<Wound>().paintype;
-                        statusText.text ="통증 : "+ secondHit.transform.GetComponent<Wound>().status["통증"];
-                    if (secondHit.transform.GetComponent<Wound>().status["감염"] != 0)
-                        statusText.text += "\n감염 : " + secondHit.transform.GetComponent<Wound>().status["감염"];
-                    if (secondHit.transform.GetComponent<Wound>().status["면역력 약화"] != 0)
-                        statusText.text += "\n면역력 약화 : " + secondHit.transform.GetComponent<Wound>().status["면역력 약화"];
-                    if (secondHit.transform.GetComponent<Wound>().status["경직"] != 0)
-                        statusText.text += "\n경직 : " + secondHit.transform.GetComponent<Wound>().status["경직"];
-                    if (secondHit.transform.GetComponent<Wound>().status["근육 약화"] != 0)
-                        statusText.text += "\n근육 약화 : " + secondHit.transform.GetComponent<Wound>().status["근육 약화"];
-                    Canvas.SetActive(true);
+                    case "Starter" :
+                        second_camera_start = secondHit.point;
+                        break;
+
+                    case "PlaneCollider" :
+                        second_camera_trandform = secondHit.point;
+                        rayDirection = secondRay.direction;
+                        break;
+
+                    case "Damaged":
+                        if (k==0)
+                        {
+                            k = 1;
+                            Canvas.SetActive(true);
+                            painText.text = secondHit.transform.GetComponent<Wound>().paintype;
+                            statusText.text = "통증 : " + secondHit.transform.GetComponent<Wound>().status["통증"];
+                            if (secondHit.transform.GetComponent<Wound>().status["감염"] != 0)
+                                statusText.text += "\n감염 : " + secondHit.transform.GetComponent<Wound>().status["감염"];
+                            if (secondHit.transform.GetComponent<Wound>().status["면역력 약화"] != 0)
+                                statusText.text += "\n면역력 약화 : " + secondHit.transform.GetComponent<Wound>().status["면역력 약화"];
+                            if (secondHit.transform.GetComponent<Wound>().status["경직"] != 0)
+                                statusText.text += "\n경직 : " + secondHit.transform.GetComponent<Wound>().status["경직"];
+                            if (secondHit.transform.GetComponent<Wound>().status["근육 약화"] != 0)
+                                statusText.text += "\n근육 약화 : " + secondHit.transform.GetComponent<Wound>().status["근육 약화"];
+                        }
+                        break;
+
+                    case "body":
+                        break;
+
+                    default:
+                        break;
+
+
                 }
-                else
+                if(k!=1)
                     Canvas.SetActive(false);
             }
         }

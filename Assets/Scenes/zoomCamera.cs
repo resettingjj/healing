@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RayCamera : MonoBehaviour
+public class ZoomCamera : MonoBehaviour
 {
+    public Camera camera;
+    private RayFromOneCameraToAnother plane;
     // Start is called before the first frame update
     void Start()
     {
@@ -13,6 +15,6 @@ public class RayCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        transform.position = camera.ScreenToWorldPoint(plane.second_camera_trandform);
     }
 }

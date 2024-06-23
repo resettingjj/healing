@@ -29,7 +29,7 @@ public class CameraController : MonoBehaviour
     void Update()
     {
         if (manager.i == 1001)
-            mainCamera.transform.position = new Vector3(0, 0, 4);
+            mainCamera.transform.position = new Vector3(0, 0, 2);
         if (manager.i > 1000)
         {
             float scrollInput = Input.GetAxis("Mouse ScrollWheel") * -1 * zoomSpeed;
