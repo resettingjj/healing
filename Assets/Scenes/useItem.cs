@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class useItem : MonoBehaviour
 {
     public GameObject plane;
+    public GameObject Cam;
+    public float StartingItemDistace;
+    public Vector3 rotate;
     private RayFromOneCameraToAnother t;
     // Start is called before the first frame update
     void Start()
@@ -16,8 +20,10 @@ public class useItem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = t.second_camera_start;
+        transform.position = Cam.transform.position;
         Quaternion rotation = Quaternion.LookRotation(-t.rayDirection);
-        transform.rotation = rotation * Quaternion.Euler(new Vector3(90, 90, 90));
+        transform.Translate(Vector3.down * StartingItemDistace);
+        transform.rotation = rotation * Quaternion.Euler(rotate);
+
     }
 }

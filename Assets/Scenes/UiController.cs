@@ -1,11 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class UiController : MonoBehaviour
+public class MoveImageToMouse : MonoBehaviour
 {
-    private void Update()
+    // 이동시킬 UI 이미지의 RectTransform을 참조합니다.
+    public RectTransform RectTransform;
+
+    void OnEnable()
     {
-        transform.position = new Vector3(Input.mousePosition.x + 35, Input.mousePosition.y+40, Input.mousePosition.z);
+        RectTransform.anchoredPosition = new Vector3(Input.mousePosition.x - 400, Input.mousePosition.y - 300, Input.mousePosition.z - 100);
     }
 }

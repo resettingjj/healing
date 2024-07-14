@@ -9,6 +9,7 @@ TagManager:
   - Button
   - PlaneCollider
   - Starter
+  - Interacter
   layers:
   - Default
   - TransparentFX
