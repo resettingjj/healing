@@ -27,45 +27,45 @@ public class iniated : MonoBehaviour
         for (int i = 0; i < 10; i++)
         {
             float angle = Random.Range(0f, 360f);
-            // ¼±ÅÃµÈ °¢µµ¿¡ µû¸¥ À§Ä¡ °è»ê
+            // ï¿½ï¿½ï¿½Ãµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½
             Vector3 targetPosition = Quaternion.Euler(0, angle, 0) * Vector3.forward * Random.Range(3f, 5f);
 
             Wound set = Instantiate(wound, targetPosition, Quaternion.identity);
             set.name = "wound"+ i;
             pain.Add(set);  
         }
-        keyPain.Add("neck_pront", "¸ñ");
-        keyPain.Add("neck_back", "¸ñ");
-        keyPain.Add("head_pront", "¾ó±¼");
-        keyPain.Add("head_back", "¸Ó¸®");
-        keyPain.Add("right_Arm_pront", "¿À¸¥ÆÈ");
-        keyPain.Add("right_Arm2_pront", "¿À¸¥ÆÈ");
-        keyPain.Add("right_Arm_back", "¿À¸¥ÆÈ");
-        keyPain.Add("right_Arm2_back", "¿À¸¥ÆÈ");
-        keyPain.Add("right_hand_pront", "¿À¸¥¼Õ");
-        keyPain.Add("right_hand_back", "¿À¸¥¼Õ");
-        keyPain.Add("left_Arm_pront", "¿ŞÆÈ");
-        keyPain.Add("left_Arm2_pront", "¿ŞÆÈ");
-        keyPain.Add("left_Arm_back", "¿ŞÆÈ");
-        keyPain.Add("left_Arm2_back", "¿ŞÆÈ");
-        keyPain.Add("left_hand_pront", "¿Ş¼Õ");
-        keyPain.Add("left_hand_back", "¿Ş¼Õ");
-        keyPain.Add("right_leg_pront", "¿À¸¥´Ù¸®");
-        keyPain.Add("right_leg2_pront", "¿À¸¥´Ù¸®");
-        keyPain.Add("right_leg_back", "¿À¸¥´Ù¸®");
-        keyPain.Add("right_leg2_back", "¿À¸¥´Ù¸®");
-        keyPain.Add("right_foot_pront", "¿À¸¥¹ß");
-        keyPain.Add("right_foot_back", "¿À¸¥¹ß");
-        keyPain.Add("left_leg_pront", "¿Ş´Ù¸®");
-        keyPain.Add("left_leg2_pront", "¿Ş´Ù¸®");
-        keyPain.Add("left_leg_back", "¿Ş´Ù¸®");
-        keyPain.Add("left_leg2_back", "¿Ş´Ù¸®");
-        keyPain.Add("left_foot_pront", "¿Ş¹ß");
-        keyPain.Add("left_foot_back", "¿Ş¹ß");
-        keyPain.Add("chest_back", "µî");
-        keyPain.Add("chest_pront", "°¡½¿");
-        keyPain.Add("Abdomen_pront", "¹è");
-        keyPain.Add("Abdomen_back", "Çã¸®");
+        keyPain.Add("neck_pront", "ëª©");
+        keyPain.Add("neck_back", "ëª©");
+        keyPain.Add("head_pront", "ì–¼êµ´");
+        keyPain.Add("head_back", "ë¨¸ë¦¬");
+        keyPain.Add("right_Arm_pront", "ì˜¤ë¥¸íŒ”");
+        keyPain.Add("right_Arm2_pront", "ì˜¤ë¥¸íŒ”");
+        keyPain.Add("right_Arm_back", "ì˜¤ë¥¸íŒ”");
+        keyPain.Add("right_Arm2_back", "ì˜¤ë¥¸íŒ”");
+        keyPain.Add("right_hand_pront", "ì˜¤ë¥¸ì†");
+        keyPain.Add("right_hand_back", "ì˜¤ë¥¸ì†");
+        keyPain.Add("left_Arm_pront", "ì™¼íŒ”");
+        keyPain.Add("left_Arm2_pront", "ì™¼íŒ”");
+        keyPain.Add("left_Arm_back", "ì™¼íŒ”");
+        keyPain.Add("left_Arm2_back", "ì™¼íŒ”");
+        keyPain.Add("left_hand_pront", "ì™¼ì†");
+        keyPain.Add("left_hand_back", "ì™¼ì†");
+        keyPain.Add("right_leg_pront", "ì˜¤ë¥¸ë‹¤ë¦¬");
+        keyPain.Add("right_leg2_pront", "ì˜¤ë¥¸ë‹¤ë¦¬");
+        keyPain.Add("right_leg_back", "ì˜¤ë¥¸ë‹¤ë¦¬");
+        keyPain.Add("right_leg2_back", "ì˜¤ë¥¸ë‹¤ë¦¬");
+        keyPain.Add("right_foot_pront", "ì˜¤ë¥¸ë°œ");
+        keyPain.Add("right_foot_back", "ì˜¤ë¥¸ë°œ");
+        keyPain.Add("left_leg_pront", "ì™¼ë‹¤ë¦¬");
+        keyPain.Add("left_leg2_pront", "ì™¼ë‹¤ë¦¬");
+        keyPain.Add("left_leg_back", "ì™¼ë‹¤ë¦¬");
+        keyPain.Add("left_leg2_back", "ì™¼ë‹¤ë¦¬");
+        keyPain.Add("left_foot_pront", "ì™¼ë°œ");
+        keyPain.Add("left_foot_back", "ì™¼ë°œ");
+        keyPain.Add("chest_back", "ë“±");
+        keyPain.Add("chest_pront", "ê°€ìŠ´");
+        keyPain.Add("Abdomen_pront", "ë°°");
+        keyPain.Add("Abdomen_back", "í—ˆë¦¬");
     }
 
     private void Start()
@@ -74,7 +74,7 @@ public class iniated : MonoBehaviour
         status = 1;
         pain.RemoveAll(obj => obj.pain == "");
         Instantiate(player, Vector3.zero, Quaternion.identity);
-        pain.OrderByDescending(obj => obj.GetComponent<Wound>().status["ÅëÁõ"]).ToList();
+        pain.OrderByDescending(obj => obj.GetComponent<Wound>().status["í†µì¦"]).ToList();
         for (int i = 0;i < pain.Count;i++)
         {
             painList.Add(pain[i].GetComponent<Wound>().pain);
@@ -86,16 +86,16 @@ public class iniated : MonoBehaviour
         {
             chat.SetActive(true);
             text.text = "";
-            printer = keyPain[painList[k]] + "ÀÇ " + pain[k].GetComponent<Wound>().paintype; 
+            printer = keyPain[painList[k]] + "ì˜ " + pain[k].GetComponent<Wound>().paintype; 
             if (Random.Range(0,3) == 0)
-                printer+=new List<string>(new string[] { " ¶§¹®¿¡ ³Ê¹« ¾ÆÆÄ¿ä", " ¶§¹®¿¡ Àáµµ Àß ¸øÀÚ°Ú¾î¿ä.", " ¶§¹®¿¡ ¸öÀÌ ºÒÆíÇØ¿ä", " ¶§¹®¿¡ Á×°Ú¾î¿ä", " Á» Ä¡·áÇØ ÁÖ½Ç ¼ö ÀÖ³ª¿ä?", " ¶§¹®¿¡ ÀÏ»ó»ıÈ°ÀÌ Èûµé¾î¿ä. °¥¼ö·Ï ¾ÇÈ­µÇ´Â °Í °°¾Æ¿ä.", " ¸ğ½ÀÀÌ ³Ê¹« Â¡±×·¯¿ö¿ä." })[Random.Range(0, 7)];
+                printer+=new List<string>(new string[] { " ë•Œë¬¸ì— ë„ˆë¬´ ì•„íŒŒìš”", " ë•Œë¬¸ì— ì ë„ ì˜ ëª»ìê² ì–´ìš”.", " ë•Œë¬¸ì— ëª¸ì´ ë¶ˆí¸í•´ìš”", " ë•Œë¬¸ì— ì£½ê² ì–´ìš”", " ì¢€ ì¹˜ë£Œí•´ ì£¼ì‹¤ ìˆ˜ ìˆë‚˜ìš”?", " ë•Œë¬¸ì— ì¼ìƒìƒí™œì´ í˜ë“¤ì–´ìš”. ê°ˆìˆ˜ë¡ ì•…í™”ë˜ëŠ” ê²ƒ ê°™ì•„ìš”.", " ëª¨ìŠµì´ ë„ˆë¬´ ì§•ê·¸ëŸ¬ì›Œìš”." })[Random.Range(0, 7)];
             else
             {
-                if (pain[k].GetComponent<Wound>().paintype == "»óÃ³")
-                    printer += "°¡ ";
+                if (pain[k].GetComponent<Wound>().paintype == "ìƒì²˜")
+                    printer += "ê°€ ";
                 else
-                    printer += "ÀÌ ";
-                printer += new List<string>(new string[] { "³Ê¹« ¾¥¼Å¼­ ¿Ô¾î¿ä", "³Ê¹« ¾ÆÆÄ¼­ °ßµğÁú ¸øÇÒ °Í °°¾Æ¼­ ¿Ô¾î¿ä", "³Ê¹« ½ÉÇØ¿ä.", "Àß ³´Áö¸¦ ¾Ê¾Æ¿ä.", "°¥¼ö·Ï ½ÉÇØÁö°í, ´Ù¸¥ °÷µµ ³Ê¹« ¾ÆÆÄ¿ä", "³Ê¹« ¾¥¼Å¼­ ¿Ô¾î¿ä", "¾ÆÆÄ¼­ °ËÁøÀ» ¹Ş°í ½Í¾î¿ä" })[Random.Range(0, 7)];
+                    printer += "ì´ ";
+                printer += new List<string>(new string[] { "ë„ˆë¬´ ì‘¤ì…”ì„œ ì™”ì–´ìš”", "ë„ˆë¬´ ì•„íŒŒì„œ ê²¬ë””ì§ˆ ëª»í•  ê²ƒ ê°™ì•„ì„œ ì™”ì–´ìš”", "ë„ˆë¬´ ì‹¬í•´ìš”.", "ì˜ ë‚«ì§€ë¥¼ ì•Šì•„ìš”.", "ê°ˆìˆ˜ë¡ ì‹¬í•´ì§€ê³ , ë‹¤ë¥¸ ê³³ë„ ë„ˆë¬´ ì•„íŒŒìš”", "ë„ˆë¬´ ì‘¤ì…”ì„œ ì™”ì–´ìš”", "ì•„íŒŒì„œ ê²€ì§„ì„ ë°›ê³  ì‹¶ì–´ìš”" })[Random.Range(0, 7)];
             }
             if (k != 3)
             {
@@ -116,5 +116,6 @@ public class iniated : MonoBehaviour
                 i = 116;
         }
         i += 1;
+
     }
 }

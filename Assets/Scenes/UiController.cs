@@ -3,11 +3,11 @@ using UnityEngine.UI;
 
 public class MoveImageToMouse : MonoBehaviour
 {
-    // ÀÌµ¿½ÃÅ³ UI ÀÌ¹ÌÁöÀÇ RectTransformÀ» ÂüÁ¶ÇÕ´Ï´Ù.
+    // ï¿½Ìµï¿½ï¿½ï¿½Å³ UI ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ RectTransformï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
     public RectTransform RectTransform;
-
+    public Camera maincam;
     void OnEnable()
     {
-        RectTransform.anchoredPosition = new Vector3(Input.mousePosition.x - 400, Input.mousePosition.y - 300, Input.mousePosition.z - 100);
+        RectTransform.anchoredPosition = new Vector3(Input.mousePosition.x - maincam.pixelWidth/2 + 60, Input.mousePosition.y - maincam.pixelHeight/2 + 60, Input.mousePosition.z - 100);
     }
 }

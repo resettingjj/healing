@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class RayFromOneCameraToAnother : MonoBehaviour
 {
-    public Camera firstCamera; // Ã¹ ¹øÂ° Ä«¸Ş¶ó
-    public Camera secondCamera; // µÎ ¹øÂ° Ä«¸Ş¶ó
+    public Camera firstCamera; // Ã¹ ï¿½ï¿½Â° Ä«ï¿½Ş¶ï¿½
+    public Camera secondCamera; // ï¿½ï¿½ ï¿½ï¿½Â° Ä«ï¿½Ş¶ï¿½
     public Transform smallPlane;
     public TextMeshProUGUI statusText;
     public TextMeshProUGUI painText;
@@ -17,15 +17,25 @@ public class RayFromOneCameraToAnother : MonoBehaviour
     public Vector3 second_camera_trandform;
     public Vector3 second_camera_start;
     public Vector3 rayDirection;
-    public int Scroll;
+    private Botton ButtonScroll;
     public List<string> HealTitle;
     public List<string> HealDescription;
+    public GameObject maginfier;
+    public GameObject Effecter;
+
+    public Transform startPoint;// ë¼ì¸ ë Œë”ëŸ¬ ì»´í¬ë„ŒíŠ¸
 
     private void Start()
     {
         manager = GameObject.Find("manager").GetComponent<iniated>();
+        ButtonScroll = GameObject.Find("Display").GetComponent<Botton>();
         Outline = GameObject.Find("notebook").transform;
         rayDirection = Vector3.forward;
+        lineRenderer = GetComponent<LineRenderer>();
+        lineRenderer.positionCount = 2; // ì‹œì‘ì ê³¼ ëì ìœ¼ë¡œ êµ¬ì„±ëœ ë¼ì¸
+        lineRenderer.startWidth = 0.01f; // ì‹œì‘ ì§€ì ì˜ ë¼ì¸ ë„ˆë¹„
+        lineRenderer.endWidth = 0.01f; // ë ì§€ì ì˜ ë¼ì¸ ë„ˆë¹„
+
     }
     void Update()
     {
@@ -33,7 +43,7 @@ public class RayFromOneCameraToAnother : MonoBehaviour
         RaycastHit hit;
         Debug.DrawRay(firstRay.origin, firstRay.direction * 15.0f, Color.red);
 
-        // ÀÛÀº planeÀÇ ·ÎÄÃ ÁÂÇ¥¸¦ ±âÁØÀ¸·Î Ray¸¦ ½õ´Ï´Ù
+        // ï¿½ï¿½ï¿½ï¿½ planeï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Rayï¿½ï¿½ ï¿½ï¿½ï¿½Ï´ï¿½
         if (Physics.Raycast(firstRay, out hit))
         {
             if (hit.transform.CompareTag("Interacter"))
@@ -56,30 +66,30 @@ public class RayFromOneCameraToAnother : MonoBehaviour
                 Canvas.SetActive(true);
                 if (hit.transform.name == "Button")
                 {
-                    painText.text = "º´¿øÀ¸·Î ÀÌ¼Û";
-                    statusText.text = "½É°¢ÇÑ °¨¿°ÀÌ ÁøÇàµÇ¾ú°Å³ª,\nÄ¡·áÇÏ±â ¾î·Á¿î »óÅÂ,\nÅëÁõÀÌ ³Ê¹« ½ÉÇÒ°æ¿ì\nº´¿øÀ¸·Î ÀÌ¼ÛÇÕ´Ï´Ù.\n\nµ·À» ¹ŞÀ» ¼ö ¾ø½À´Ï´Ù.";
+                    painText.text = "ë³‘ì›ìœ¼ë¡œ ì´ì†¡";
+                    statusText.text = "ì‹¬ê°í•œ ê°ì—¼ì´ ì§„í–‰ë˜ì—ˆê±°ë‚˜,\nì¹˜ë£Œí•˜ê¸° ì–´ë ¤ìš´ ìƒíƒœ,\ní†µì¦ì´ ë„ˆë¬´ ì‹¬í• ê²½ìš°\në³‘ì›ìœ¼ë¡œ ì´ì†¡í•©ë‹ˆë‹¤.\n\nëˆì„ ë°›ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.";
                 }
                 if (hit.transform.name == "Button1")
                 {
-                    painText.text = HealTitle[Scroll * 3];
-                    statusText.text = HealDescription[Scroll * 3].Replace("\\n", "\n");
+                    painText.text = HealTitle[ButtonScroll.Scroll * 3];
+                    statusText.text = HealDescription[ButtonScroll.Scroll * 3].Replace("\\n", "\n");
                 }
                 if (hit.transform.name == "Button2")
                 {
-                    painText.text = HealTitle[Scroll * 3 +1];
-                    statusText.text = HealDescription[Scroll * 3 +1].Replace("\\n", "\n");
+                    painText.text = HealTitle[ButtonScroll.Scroll * 3 +1];
+                    statusText.text = HealDescription[ButtonScroll.Scroll * 3 +1].Replace("\\n", "\n");
                 }
                 if (hit.transform.name == "Button3")
                 {
-                    painText.text = HealTitle[Scroll * 3 +2];
-                    statusText.text = HealDescription[Scroll * 3 +2].Replace("\\n", "\n");
+                    painText.text = HealTitle[ButtonScroll.Scroll * 3 +2];
+                    statusText.text = HealDescription[ButtonScroll.Scroll * 3 +2].Replace("\\n", "\n");
                 }
             }
             else
                 Canvas.SetActive(false);
 
 
-            // ÀÛÀº plane¿¡¼­ÀÇ Ãæµ¹ ÁöÁ¡À» ¾ò½À´Ï´Ù
+            // ï¿½ï¿½ï¿½ï¿½ planeï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½æµ¹ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï´ï¿½
             if (hit.transform.name == "Plane")
             {
                 Cursor.visible = false;
@@ -94,7 +104,28 @@ public class RayFromOneCameraToAnother : MonoBehaviour
                 int k = 0;
                 foreach (RaycastHit secondHit in secondhit)
                 {
-                    switch (secondHit.transform.tag)
+                    
+                    if (Input.GetMouseButtonUp(0))
+                    {
+                        Effecter.SetActive(false);
+                        lineRenderer.enabled = false;
+                    }
+                    if (secondHit.transform.tag == "body")
+                    {
+                        if (Input.GetMouseButton(0))
+                        {
+                            Vector3 direction = (secondHit.point - startPoint.position).normalized;
+                            float distance = Vector3.Distance(startPoint.position, secondHit.point);
+                            lineRenderer.enabled = true;
+                            Vector3 endPoint = startPoint.position + direction * distance;
+                            // LineRendererì— ì‹œì‘ì ê³¼ ëì  ì„¤ì •
+                            lineRenderer.SetPosition(0, startPoint.position);
+                            lineRenderer.SetPosition(1, endPoint);
+                            Effecter.transform.position = secondHit.point;
+                            Effecter.SetActive(true);
+                        }
+                    }
+                    else switch (secondHit.transform.tag)
                     {
 
                         case "PlaneCollider":
@@ -103,7 +134,7 @@ public class RayFromOneCameraToAnother : MonoBehaviour
                             break;
 
                         case "Damaged":
-                            if (k == 0)
+                            if (k == 0 && maginfier.activeSelf)
                             {
                                 k = 1;
                                 painText.rectTransform.sizeDelta = new Vector2(31.39f, 36.3f);
@@ -114,22 +145,26 @@ public class RayFromOneCameraToAnother : MonoBehaviour
 
                                 Canvas.SetActive(true);
                                 painText.text = secondHit.transform.GetComponent<Wound>().paintype;
-                                statusText.text = "ÅëÁõ : " + secondHit.transform.GetComponent<Wound>().status["ÅëÁõ"];
-                                if (secondHit.transform.GetComponent<Wound>().status["°¨¿°"] != 0)
-                                    statusText.text += "\n°¨¿° : " + secondHit.transform.GetComponent<Wound>().status["°¨¿°"];
-                                if (secondHit.transform.GetComponent<Wound>().status["¸é¿ª·Â ¾àÈ­"] != 0)
-                                    statusText.text += "\n¸é¿ª·Â ¾àÈ­ : " + secondHit.transform.GetComponent<Wound>().status["¸é¿ª·Â ¾àÈ­"];
-                                if (secondHit.transform.GetComponent<Wound>().status["°æÁ÷"] != 0)
-                                    statusText.text += "\n°æÁ÷ : " + secondHit.transform.GetComponent<Wound>().status["°æÁ÷"];
-                                if (secondHit.transform.GetComponent<Wound>().status["±ÙÀ° ¾àÈ­"] != 0)
-                                    statusText.text += "\n±ÙÀ° ¾àÈ­ : " + secondHit.transform.GetComponent<Wound>().status["±ÙÀ° ¾àÈ­"];
-                            }
-                            break;
-
-                        case "body":
+                                statusText.text = "í†µì¦ : " + secondHit.transform.GetComponent<Wound>().status["í†µì¦"];
+                                if (secondHit.transform.GetComponent<Wound>().status["ê°ì—¼"] != 0)
+                                    statusText.text += "\nê°ì—¼ : " + secondHit.transform.GetComponent<Wound>().status["ê°ì—¼"];
+                                if (secondHit.transform.GetComponent<Wound>().status["ë©´ì—­ë ¥ ì•½í™”"] != 0)
+                                    statusText.text += "\në©´ì—­ë ¥ ì•½í™” : " + secondHit.transform.GetComponent<Wound>().status["ë©´ì—­ë ¥ ì•½í™”"];
+                                if (secondHit.transform.GetComponent<Wound>().status["ê²½ì§"] != 0)
+                                    statusText.text += "\nê²½ì§ : " + secondHit.transform.GetComponent<Wound>().status["ê²½ì§"];
+                                if (secondHit.transform.GetComponent<Wound>().status["ê·¼ìœ¡ ì•½í™”"] != 0)
+                                    statusText.text += "\nê·¼ìœ¡ ì•½í™” : " + secondHit.transform.GetComponent<Wound>().status["ê·¼ìœ¡ ì•½í™”"];                            }
                             break;
 
                         default:
+                            Vector3 direction = (secondHit.point - startPoint.position).normalized;
+                            float distance = hit.distance;
+                            Vector3 endPoint = startPoint.position + direction * distance;
+                            // LineRendererì— ì‹œì‘ì ê³¼ ëì  ì„¤ì •
+                            lineRenderer.SetPosition(0, startPoint.position);
+                            lineRenderer.SetPosition(1, endPoint);
+                            Effecter.SetActive(false);
+                        lineRenderer.enabled = false;
                             break;
 
 

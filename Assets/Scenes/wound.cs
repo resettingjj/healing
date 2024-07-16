@@ -39,12 +39,13 @@ public class Wound : MonoBehaviour
                    pain = pain + "_pront";
                 else
                    pain = pain + "_back";
-                paintype = new List<string>(new string[] {"»óÃ³", "È­»ó", "°ñÀı", "±ÙÀ°ÆÄ¿­"})[Random.Range(0, 4)];
-                status.Add("ÅëÁõ", Random.Range(1,10));
-                status.Add("°¨¿°", Random.Range(-5, 23)/7);
-                status.Add("¸é¿ª·Â ¾àÈ­", Random.Range(-2, 18)/3);
-                status.Add("°æÁ÷", Random.Range(-1, 10)/2);
-                status.Add("±ÙÀ° ¾àÈ­", Random.Range(0, 10)/3);
+                paintype = new List<string>(new string[] {"ìƒì²˜", "í™”ìƒ", "ê³¨ì ˆ", "ê·¼ìœ¡íŒŒì—´"})[Random.Range(0, 4)];
+                status.Add("í†µì¦", Random.Range(1,10));
+                status.Add("ê°ì—¼", Random.Range(-5, 23)/7);
+                status.Add("ë©´ì—­ë ¥ ì•½í™”", Random.Range(-2, 18)/3);
+                status.Add("ê²½ì§", Random.Range(-1, 10)/2);
+                status.Add("ê·¼ìœ¡ ì•½í™”", Random.Range(0, 10)/3);
+
 
                 transform.parent = hit.collider.gameObject.transform;
                 transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
@@ -57,13 +58,6 @@ public class Wound : MonoBehaviour
             
         }
         
-    }
-    private void Update()
-    {
-        if (manager.i == 165)
-        {
-
-        }
     }
 }
 
