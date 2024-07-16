@@ -100,6 +100,7 @@ public class RayFromOneCameraToAnother : MonoBehaviour
                 Ray secondRay = secondCamera.ScreenPointToRay(new Vector2((-screenX + (firstCamera.pixelWidth / 2f)) / firstCamera.pixelWidth * secondCamera.pixelWidth, (-screenY + (firstCamera.pixelHeight / 2f)) / firstCamera.pixelWidth * secondCamera.pixelWidth));
                 RaycastHit[] secondhit;
                 secondhit = Physics.RaycastAll(secondRay, 15);
+                System.Array.Sort(secondhit, (hit1, hit2) => hit1.distance.CompareTo(hit2.distance));
                 Debug.DrawRay(secondRay.origin, secondRay.direction * 15.0f, Color.red);
                 int k = 0;
                 foreach (RaycastHit secondHit in secondhit)
@@ -114,16 +115,22 @@ public class RayFromOneCameraToAnother : MonoBehaviour
                     {
                         if (Input.GetMouseButton(0))
                         {
-                            Vector3 direction = (secondHit.point - startPoint.position).normalized;
-                            float distance = Vector3.Distance(startPoint.position, secondHit.point);
-                            lineRenderer.enabled = true;
-                            Vector3 endPoint = startPoint.position + direction * distance;
-                            // LineRenderer에 시작점과 끝점 설정
-                            lineRenderer.SetPosition(0, startPoint.position);
-                            lineRenderer.SetPosition(1, endPoint);
-                            Effecter.transform.position = secondHit.point;
-                            Effecter.SetActive(true);
+                            if (ButtonScroll.itemSelected != -1)
+                            {
+                                Vector3 direction = (secondHit.point - startPoint.position).normalized;
+                                float distance = Vector3.Distance(startPoint.position, secondHit.point);
+                                lineRenderer.enabled = true;
+                                Vector3 endPoint = startPoint.position + direction * distance;
+                                // LineRenderer에 시작점과 끝점 설정
+                                lineRenderer.SetPosition(0, startPoint.position);
+                                lineRenderer.SetPosition(1, endPoint);
+                                
+                                Effecter.SetActive(true);
+                                Effecter.transform.position = secondHit.point;
+                                Effecter.transform.rotation = Quaternion.FromToRotation(Vector3.up, secondHit.normal);
+                            }
                         }
+                        break;
                     }
                     else switch (secondHit.transform.tag)
                     {

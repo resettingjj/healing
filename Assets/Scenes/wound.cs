@@ -39,7 +39,9 @@ public class Wound : MonoBehaviour
                    pain = pain + "_pront";
                 else
                    pain = pain + "_back";
-                paintype = new List<string>(new string[] {"상처", "화상", "골절", "근육파열"})[Random.Range(0, 4)];
+                int randomPaintype = Random.Range(0, 4);
+                paintype = new List<string>(new string[] {"상처", "화상", "골절", "근육파열"})[randomPaintype];
+                transform.GetChild(randomPaintype).gameObject.SetActive(true);
                 status.Add("통증", Random.Range(1,10));
                 status.Add("감염", Random.Range(-5, 23)/7);
                 status.Add("면역력 약화", Random.Range(-2, 18)/3);

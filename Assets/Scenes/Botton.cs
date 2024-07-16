@@ -22,7 +22,7 @@ public class Botton : MonoBehaviour
 
     public int Scroll;
     public int itemSelected = -1;
-
+    public PlayerPosRotate rotater;
 
     
     public void OnClickButton1()
@@ -134,6 +134,9 @@ public class Botton : MonoBehaviour
                 itemSelected = -1;
             }
             ColorChanging(button3,click3);
+        }else
+        {
+            rotater.reposition();
         }
     }
     
