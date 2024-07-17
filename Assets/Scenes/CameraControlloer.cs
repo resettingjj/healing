@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 
 public class CameraController : MonoBehaviour
@@ -10,13 +12,21 @@ public class CameraController : MonoBehaviour
     private Camera mainCamera;
     public float zoomSpeed = 3.0f;
     public float limit;
-    public float scrollSpeed = 5f; // ½ºÅ©·Ñ ¼Óµµ
-    public float minX = -10f;      // X Ãà ÃÖ¼Ò°ª
-    public float maxX = 10f;       // X Ãà ÃÖ´ë°ª
+    public float scrollSpeed = 5f; // ï¿½ï¿½Å©ï¿½ï¿½ ï¿½Óµï¿½
+    public float minX = -10f;      // X ï¿½ï¿½ ï¿½Ö¼Ò°ï¿½
+    public float maxX = 10f;       // X ï¿½ï¿½ ï¿½Ö´ë°ª
     public float minZoom = 3.7f;
     public float maxZoom = 8.7f;
     private iniated manager;
     private Vector3 dragOrigin;
+    public GameObject canvas;
+    public GameObject tutorial;
+    public TextMeshProUGUI woundstat;
+    public TextMeshProUGUI resultheal;
+    public TextMeshProUGUI resultmoney;
+    private int startpainsum;
+    private int startinfection;
+
 
 
     void Start()
@@ -24,52 +34,65 @@ public class CameraController : MonoBehaviour
         mainCamera = GetComponent<Camera>();
         manager = GameObject.Find("manager").GetComponent<iniated>();
     }
+    public void finishCamera()
+    {
+        mainCamera.transform.position = new Vector3(0, 0, -10);
+        canvas.SetActive(true);
+        woundstat.text = "\n ìƒì²˜ ì¹˜ë£Œ : ("+ "7" + "/" + manager.pain.Count + ")\nì¹˜ëª…ì ì¸ ìƒì²˜ : ("+ "7" + "/3)\nìƒì²˜ ê°ì—¼ë„ : " + startinfection + "\n\n í†µì¦ ì™„í™” : (" + "12" + "/" + startpainsum +")\nìŠ¤íŠ¸ë ˆìŠ¤ ìˆ˜ì¹˜ : (" + "72" + "/100)";
+    }
 
     // Update is called once per frame
     void Update()
     {
         if (manager.i == 1001)
+        {
+            startpainsum = manager.painSum;
+            startinfection = manager.infectionSum;
+            canvas.SetActive(false);
+            tutorial.SetActive(false);
             mainCamera.transform.position = new Vector3(0, 0, 2);
+        }
+
         if (manager.i > 1000)
         {
             float scrollInput = Input.GetAxis("Mouse ScrollWheel") * -1 * zoomSpeed;
 
-            // Ä«¸Þ¶óÀÇ ÇöÀç À§Ä¡ °¡Á®¿À±â
+            // Ä«ï¿½Þ¶ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             Vector3 cameraPosition = mainCamera.transform.position;
 
-            // Ä«¸Þ¶óÀÇ zÃà À§Ä¡ Á¶Á¤
+            // Ä«ï¿½Þ¶ï¿½ï¿½ï¿½ zï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½
             cameraPosition.z += scrollInput;
 
-            // zÃà À§Ä¡¸¦ ÃÖ¼Ò ¹× ÃÖ´ë °ªÀ¸·Î Á¦ÇÑ
+            // zï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½Ö¼ï¿½ ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             cameraPosition.z = Mathf.Clamp(cameraPosition.z, minZoom, maxZoom);
 
-            // Á¶Á¤µÈ À§Ä¡¸¦ Ä«¸Þ¶ó¿¡ Àû¿ë
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ Ä«ï¿½Þ¶ï¿½ ï¿½ï¿½ï¿½ï¿½
             mainCamera.transform.position = cameraPosition;
             if (Input.GetMouseButtonDown(2))
             {
-                // µå·¡±× ½ÃÀÛ À§Ä¡ ÀúÀå
+                // ï¿½å·¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½
                 dragOrigin = Input.mousePosition;
             }
 
-            // ¸¶¿ì½º ÈÙ ¹öÆ°ÀÌ Å¬¸¯µÈ »óÅÂ¿¡¼­¸¸ µå·¡±×
+            // ï¿½ï¿½ï¿½ì½º ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â¿ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½å·¡ï¿½ï¿½
             if (Input.GetMouseButton(2))
             {
                 float zoomin = mainCamera.transform.position.z;
-                // µå·¡±× ¹æÇâ°ú ¼Óµµ °è»ê
+                // ï¿½å·¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½ ï¿½ï¿½ï¿½
                 Vector3 dragDelta = Input.mousePosition - dragOrigin;
                 Vector3 move = new Vector3(dragDelta.x, -dragDelta.y, 0) * 0.1f * Time.deltaTime * zoomin / 4;
 
-                // Ä«¸Þ¶ó À§Ä¡ ¾÷µ¥ÀÌÆ®
+                // Ä«ï¿½Þ¶ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
                 transform.Translate(move, Space.World);
 
-                // Ä«¸Þ¶ó À§Ä¡ Á¦ÇÑ
+                // Ä«ï¿½Þ¶ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½
                 Vector3 clampedPosition = transform.position;
                 float wheel = 1 / (mainCamera.transform.position.z - 2.7f);
                 clampedPosition.x = Mathf.Clamp(clampedPosition.x, minX * zoomin, maxX * zoomin);
                 clampedPosition.y = Mathf.Clamp(clampedPosition.y, minX * zoomin, maxX * zoomin);
                 transform.position = clampedPosition;
 
-                // µå·¡±× ½ÃÀÛ À§Ä¡ °»½Å
+                // ï¿½å·¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½
                 dragOrigin = Input.mousePosition;
             }
         }

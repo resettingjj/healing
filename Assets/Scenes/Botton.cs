@@ -19,12 +19,26 @@ public class Botton : MonoBehaviour
     public GameObject obj1;
     public GameObject obj2;
     public GameObject obj3;
+    public GameObject Tutorial;
 
     public int Scroll;
     public int itemSelected = -1;
     public PlayerPosRotate rotater;
+    public bool tuto  = false;
 
+    public void tutorial()
+    {
+        if(!tuto)
+        {
+            Tutorial.SetActive(true);
+            tuto = true;
+        }else
+        {
+            Tutorial.SetActive(false);
+            tuto = false;
+        }
     
+    }
     public void OnClickButton1()
     {
         
@@ -155,11 +169,15 @@ public class Botton : MonoBehaviour
     public void slide_up()
     {
         Scroll += 1;
+        if (Scroll == 5)
+            Scroll = 0;
         scrolling();
     }
     public void slide_down()
     {
         Scroll += -1;
+        if (Scroll == -1)
+            Scroll = 4;
         scrolling();
     }
     public void scrolling()

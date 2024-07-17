@@ -59,15 +59,21 @@ public class RayFromOneCameraToAnother : MonoBehaviour
             {
                 painText.rectTransform.sizeDelta = new Vector2(50.0f, 36.3f);
                 statusText.rectTransform.sizeDelta = new Vector2(55.7f, 36.3f);
-                painText.rectTransform.anchoredPosition = new Vector2(0.179997191f, 6.11000013f);
-                statusText.rectTransform.anchoredPosition = new Vector2(0.179997191f, -3.2f);
+                painText.rectTransform.anchoredPosition = new Vector2(0.179997191f, 13.91f);
+                statusText.rectTransform.anchoredPosition = new Vector2(0.179997191f, 4.9f);
 
-                Canvas.GetComponent<RectTransform>().sizeDelta = new Vector2(59.7f, 51.7f);
+                Canvas.GetComponent<RectTransform>().sizeDelta = new Vector2(59.7f, 65.34f);
                 Canvas.SetActive(true);
                 if (hit.transform.name == "Button")
                 {
                     painText.text = "병원으로 이송";
-                    statusText.text = "심각한 감염이 진행되었거나,\n치료하기 어려운 상태,\n통증이 너무 심할경우\n병원으로 이송합니다.\n\n돈을 받을 수 없습니다.";
+                    statusText.text = "심각한 감염이 진행되었거나,\n치료하기 어려운 상태,\n통증,감염이 너무 심할경우\n병원으로 이송합니다.\n\n돈을 받을 수 없습니다.";
+                }
+                if (hit.transform.name == "completeButton")
+                {
+                    painText.text = "치료 완료하기";
+                    statusText.text = "치료를 완료합니다.\n치료되지 않은 상처가 있거나,\n통증,감염이 너무 심할경우\n스트레스 수치가 증가합니다.\n\n스트레스 수치에 비례하여 정산받습니다.";
+
                 }
                 if (hit.transform.name == "Button1")
                 {
@@ -84,6 +90,7 @@ public class RayFromOneCameraToAnother : MonoBehaviour
                     painText.text = HealTitle[ButtonScroll.Scroll * 3 +2];
                     statusText.text = HealDescription[ButtonScroll.Scroll * 3 +2].Replace("\\n", "\n");
                 }
+                
             }
             else
                 Canvas.SetActive(false);

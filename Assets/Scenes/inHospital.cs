@@ -12,29 +12,29 @@ public class inHospital : MonoBehaviour
     public float dragspeed;
     private iniated statusController;
     public int stat;
+    public int animationStopTime;
+    public bool stopAnimation;
     // Start is called before the first frame update
-    private void Awake()
+
+    void OnEnable()
+    {
+        Hospital();
+    }
+
+    // Update is called once per frame
+    public void Hospital()
     {
         statusController = GameObject.Find("manager").GetComponent<iniated>();
         animator = GetComponentInChildren<Animator>();
         stat = statusController.status;
-    }
-    void Start()
-    {
         if (stat == 1)
         {
             transform.parent = Camera.transform;
-            Hospital();
+            transform.localScale = Vector3.one * 10.0f;
+            transform.transform.localPosition = new Vector3(-43.9f, -6.23f, 100.0f);
+            // ï¿½Ú½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½È°ï¿½ï¿½È­
+            animator.Play("walk 0");
         }
-    }
-
-    // Update is called once per frame
-    void Hospital()
-    {
-        transform.localScale = Vector3.one * 10.0f;
-        transform.transform.localPosition = new Vector3(-43.9f, -6.23f, 100.0f);
-        // ÀÚ½Ä ¿ÀºêÁ§Æ®ÀÇ ¸ðµç ÄÄÆ÷³ÍÆ®¸¦ ºñÈ°¼ºÈ­
-        animator.Play("walk 0");
     }
     void Update()
     {
@@ -62,6 +62,20 @@ public class inHospital : MonoBehaviour
             {
                 transform.Rotate(0f, -Input.GetAxis("Mouse X") * dragspeed*15f, 0f, Space.World);
                 transform.Rotate(-Input.GetAxis("Mouse Y") * dragspeed*15f, 0f, 0f);
+            }
+            if(stopAnimation)
+            {
+                if (animationStopTime == 0)
+                {
+                    animationStopTime = statusController.i;
+                    animator.enabled = false;
+                }
+                else if(animationStopTime +640 < statusController.i)
+                {
+                    animationStopTime = 0;
+                    stopAnimation = false;
+                    animator.enabled = true;
+                }
             }
         }
     }

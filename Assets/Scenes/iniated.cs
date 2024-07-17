@@ -19,21 +19,59 @@ public class iniated : MonoBehaviour
     public  Dictionary<string, string> keyPain = new Dictionary<string, string> ();
     private string printer;
     private int k;
+    public TextMeshProUGUI checkList;
     private List<string> message;
+    public string fainThreeList;
+    private GameObject copyPlayer;
+
+    public int painSum;
+    public int infectionSum;
     // Start is called before the first frame update
-    void Awake()
+
+    public void settingGame()
     {
         status = 0;
+        i=0;
+        k=0;
         for (int i = 0; i < 10; i++)
         {
             float angle = Random.Range(0f, 360f);
-            // ���õ� ������ ���� ��ġ ���
             Vector3 targetPosition = Quaternion.Euler(0, angle, 0) * Vector3.forward * Random.Range(3f, 5f);
-
             Wound set = Instantiate(wound, targetPosition, Quaternion.identity);
             set.name = "wound"+ i;
-            pain.Add(set);  
+            pain.Add(set);
         }
+        
+        isbokje = true;
+        status = 1;
+        pain.RemoveAll(obj => obj.pain == "");
+        pain = pain.OrderByDescending(obj => obj.GetComponent<Wound>().status["통증"]).ToList();
+        painSum = pain.Sum(dict => dict.GetComponent<Wound>().status.ContainsKey("감염") ? dict.GetComponent<Wound>().status["감염"] : 0);
+        painSum = pain.Sum(dict => dict.GetComponent<Wound>().status.ContainsKey("통증") ? dict.GetComponent<Wound>().status["통증"] : 0);
+        painList.Clear();
+        for (int a = 0;a < pain.Count;a++)
+        {
+            painList.Add(pain[a].GetComponent<Wound>().pain);
+        }
+        copyPlayer = Instantiate(player, Vector3.zero, Quaternion.identity);
+    }
+    public void resetGame()
+    {
+        Destroy(copyPlayer);
+        foreach(Wound scratch in pain)
+            Destroy(scratch.gameObject);
+        pain.Clear();
+        painList.Clear();
+        status = 0;
+        fainThreeList = "";
+        isbokje = false;
+        player.SetActive(false);
+        player.SetActive(true);
+        settingGame();
+
+    }
+    private void Start()
+    {
         keyPain.Add("neck_pront", "목");
         keyPain.Add("neck_back", "목");
         keyPain.Add("head_pront", "얼굴");
@@ -66,19 +104,7 @@ public class iniated : MonoBehaviour
         keyPain.Add("chest_pront", "가슴");
         keyPain.Add("Abdomen_pront", "배");
         keyPain.Add("Abdomen_back", "허리");
-    }
-
-    private void Start()
-    {
-        isbokje = true;
-        status = 1;
-        pain.RemoveAll(obj => obj.pain == "");
-        Instantiate(player, Vector3.zero, Quaternion.identity);
-        pain.OrderByDescending(obj => obj.GetComponent<Wound>().status["통증"]).ToList();
-        for (int i = 0;i < pain.Count;i++)
-        {
-            painList.Add(pain[i].GetComponent<Wound>().pain);
-        }
+        settingGame();
     }
     private void Update()
     {
@@ -86,7 +112,8 @@ public class iniated : MonoBehaviour
         {
             chat.SetActive(true);
             text.text = "";
-            printer = keyPain[painList[k]] + "의 " + pain[k].GetComponent<Wound>().paintype; 
+            printer = keyPain[painList[k]] + "의 " + pain[k].GetComponent<Wound>().paintype;
+            fainThreeList += "ㅁ" + printer +"\n";
             if (Random.Range(0,3) == 0)
                 printer+=new List<string>(new string[] { " 때문에 너무 아파요", " 때문에 잠도 잘 못자겠어요.", " 때문에 몸이 불편해요", " 때문에 죽겠어요", " 좀 치료해 주실 수 있나요?", " 때문에 일상생활이 힘들어요. 갈수록 악화되는 것 같아요.", " 모습이 너무 징그러워요." })[Random.Range(0, 7)];
             else
@@ -97,25 +124,24 @@ public class iniated : MonoBehaviour
                     printer += "이 ";
                 printer += new List<string>(new string[] { "너무 쑤셔서 왔어요", "너무 아파서 견디질 못할 것 같아서 왔어요", "너무 심해요.", "잘 낫지를 않아요.", "갈수록 심해지고, 다른 곳도 너무 아파요", "너무 쑤셔서 왔어요", "아파서 검진을 받고 싶어요" })[Random.Range(0, 7)];
             }
-            if (k != 3)
-            {
-                i += 1;
-                k += 1;
-            }
-            else
-            {
-                chat.SetActive(false);
-                i = 1000;
-            }
-        }
+            k+=1;
+        }  
         if(i > 166 && i < 1000)
         {
             if (printer.Length > (i - 167))
                     text.text += printer[(i - 167)];
             else
-                i = 116;
+            {
+                i = 145;
+                checkList.text = fainThreeList;
+                if (k==3)
+                {
+                    chat.SetActive(false);
+                    i = 1000;
+                }
+            }
+                
         }
         i += 1;
-
     }
 }

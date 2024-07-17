@@ -54,7 +54,7 @@ public class Wound : MonoBehaviour
             }
             else
             {
-                gameObject.SetActive(false);
+                Destroy(gameObject);
             }
             Collider1.enabled = true;
             
