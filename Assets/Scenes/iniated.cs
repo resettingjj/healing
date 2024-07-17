@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System.Linq;
+using UnityEngine.UI;
 
 public class iniated : MonoBehaviour
 {
@@ -23,9 +24,16 @@ public class iniated : MonoBehaviour
     private List<string> message;
     public string fainThreeList;
     private GameObject copyPlayer;
+    
+    public float stress = 100;
+    public float stressful = 1;
+    public Slider slice;
 
-    public int painSum;
-    public int infectionSum;
+    public float painSum;
+    public int completeWound;
+    public float infectionSum;
+    public List<bool> checking;
+    public int sumCheck;
     // Start is called before the first frame update
 
     public void settingGame()
@@ -46,8 +54,6 @@ public class iniated : MonoBehaviour
         status = 1;
         pain.RemoveAll(obj => obj.pain == "");
         pain = pain.OrderByDescending(obj => obj.GetComponent<Wound>().status["통증"]).ToList();
-        painSum = pain.Sum(dict => dict.GetComponent<Wound>().status.ContainsKey("감염") ? dict.GetComponent<Wound>().status["감염"] : 0);
-        painSum = pain.Sum(dict => dict.GetComponent<Wound>().status.ContainsKey("통증") ? dict.GetComponent<Wound>().status["통증"] : 0);
         painList.Clear();
         for (int a = 0;a < pain.Count;a++)
         {
@@ -55,8 +61,19 @@ public class iniated : MonoBehaviour
         }
         copyPlayer = Instantiate(player, Vector3.zero, Quaternion.identity);
     }
+    public void getWoundValue()
+    {
+        infectionSum = pain.Sum(dict => dict.GetComponent<Wound>().status.ContainsKey("감염") ? dict.GetComponent<Wound>().status["감염"] : 0);
+        painSum = pain.Sum(dict => dict.GetComponent<Wound>().status.ContainsKey("통증") ? dict.GetComponent<Wound>().status["통증"] : 0);
+        completeWound = pain.Count(dict => dict.GetComponent<Wound>().paintype == "치료됨");
+        sumCheck = checking.Count(a => a == true);
+    }
     public void resetGame()
     {
+        getWoundValue();
+        checking[0] = false;
+        checking[1] = false;
+        checking[2] = false;
         Destroy(copyPlayer);
         foreach(Wound scratch in pain)
             Destroy(scratch.gameObject);
@@ -108,8 +125,13 @@ public class iniated : MonoBehaviour
     }
     private void Update()
     {
+        
+        
+        slice.value = stress;
         if (i==166)
         {
+            
+            stress = 100;
             chat.SetActive(true);
             text.text = "";
             printer = keyPain[painList[k]] + "의 " + pain[k].GetComponent<Wound>().paintype;
@@ -143,5 +165,21 @@ public class iniated : MonoBehaviour
                 
         }
         i += 1;
+        if(i > 1000)
+        {
+            if (i%25 == 0)
+            stress += -0.1f*stressful;
+            fainThreeList = "";
+            for(int i = 0; i < 3; i++){
+                printer = keyPain[painList[i]] + "의 " + pain[i].GetComponent<Wound>().paintype;
+                if(pain[i].GetComponent<Wound>().paintype == "치료됨")
+                {
+                    checking[i] = true;
+                    printer = "완료됨";
+                }
+                fainThreeList += "ㅁ" + printer +"\n";
+            }
+            checkList.text = fainThreeList;
+        }
     }
 }

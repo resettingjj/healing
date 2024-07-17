@@ -21,6 +21,8 @@ public class Botton : MonoBehaviour
     public GameObject obj3;
     public GameObject Tutorial;
 
+    public iniated manager;
+
     public int Scroll;
     public int itemSelected = -1;
     public PlayerPosRotate rotater;
@@ -54,7 +56,11 @@ public class Botton : MonoBehaviour
                 itemSelected = Scroll*3 -3;
             }
             else
+            {
                 Magnify.SetActive(true);
+                manager.stressful += 0.1f;
+            }
+                
         }
         else if (click1) 
         {
@@ -62,7 +68,11 @@ public class Botton : MonoBehaviour
             if (Scroll != 0)
                 itemSelected = -1;
             else
+            {
                 Magnify.SetActive(false);
+                manager.stressful += -0.1f;
+            }
+                
         }
         ColorChanging(button1,click1);
     }
@@ -80,7 +90,11 @@ public class Botton : MonoBehaviour
                 itemSelected = Scroll*3-2;
             }
             else
+            {
                 cloth.SetActive(false);
+                manager.stressful += 1f;
+            }
+                
         }
         else if (click2)
         {
@@ -88,7 +102,10 @@ public class Botton : MonoBehaviour
             if (Scroll != 0)
                 itemSelected = -1;
             else
+            {
+                manager.stressful += -1f; 
                 cloth.SetActive(true);
+            }
         }
         ColorChanging(button2,click2);
     }
@@ -117,16 +134,15 @@ public class Botton : MonoBehaviour
     }
     void SetActiveItem(GameObject gameObject)
     {
+        if(itemSelected == -1)
+                DisableAllChildren(gameObject);
         // 현재 게임 오브젝트의 두 번째 자식 오브젝트 가져오기 (인덱스는 0부터 시작)
         if (gameObject.transform.childCount > itemSelected) // 적어도 두 개 이상의 자식 오브젝트가 있어야 함
         {
-            GameObject secondChild = gameObject.transform.GetChild(itemSelected).gameObject;
-            secondChild.SetActive(true); // 두 번째 자식 오브젝트 활성화
+            gameObject.transform.GetChild(itemSelected).gameObject.SetActive(true);
+            
         }
-        else
-        {
-            Debug.LogWarning("There are not enough children to activate the second child.");
-        }
+        
     }
 
     public void OnClickButton3()

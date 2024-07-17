@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -8,6 +7,7 @@ using TMPro;
 
 public class CameraController : MonoBehaviour
 {
+    public RayFromOneCameraToAnother plane;
     // Start is called before the first frame update
     private Camera mainCamera;
     public float zoomSpeed = 3.0f;
@@ -24,8 +24,8 @@ public class CameraController : MonoBehaviour
     public TextMeshProUGUI woundstat;
     public TextMeshProUGUI resultheal;
     public TextMeshProUGUI resultmoney;
-    private int startpainsum;
-    private int startinfection;
+    private float startpainsum;
+    public int resultMoney;
 
 
 
@@ -38,16 +38,73 @@ public class CameraController : MonoBehaviour
     {
         mainCamera.transform.position = new Vector3(0, 0, -10);
         canvas.SetActive(true);
-        woundstat.text = "\n 상처 치료 : ("+ "7" + "/" + manager.pain.Count + ")\n치명적인 상처 : ("+ "7" + "/3)\n상처 감염도 : " + startinfection + "\n\n 통증 완화 : (" + "12" + "/" + startpainsum +")\n스트레스 수치 : (" + "72" + "/100)";
+        woundstat.text = "\n 상처 치료 : ("+ manager.completeWound + "/" + manager.pain.Count + ")\n치명적인 상처 : ("+ manager.sumCheck + "/3)\n상처 감염도 : " + Mathf.FloorToInt(manager.infectionSum) + "\n\n 통증 완화 : (" + Mathf.FloorToInt(manager.painSum) + "/" + startpainsum +")\n스트레스 수치 : (" + Mathf.FloorToInt(manager.stress) + "/100)";
+        resultheal.text = "\n";
+        resultMoney = 0;
+        evaluation(manager.completeWound/manager.pain.Count);
+        evaluation(manager.sumCheck/3);
+        if (manager.infectionSum >= 9)
+        {
+            resultheal.text += "worst\n";
+            resultMoney += -50;
+        }else if(manager.infectionSum >= 7)
+        {
+            resultheal.text += "bad\n";
+            resultMoney += -20;
+        }else if(manager.infectionSum >= 5)
+        {
+            resultheal.text += "soso\n";
+            resultMoney += 5;
+        }else if(manager.infectionSum >= 3)
+        {
+            resultheal.text += "good\n";
+            resultMoney += 5;
+        }
+        else if(manager.infectionSum >= 1)
+        {
+            resultheal.text += "nice\n";
+            resultMoney += 30;
+        }else{
+            resultheal.text += "perpect\n";
+            resultMoney += 30;
+        }
+        resultheal.text += "\n";
+        evaluation((startpainsum-manager.painSum)/startpainsum);
+        evaluation((manager.stress)/100);
+        resultmoney.text = "정산 금액 : " + resultMoney+"$";
+        plane.money += resultMoney;
     }
-
+    void evaluation(float ratio)
+    {
+        if (ratio == 1)
+        {
+            resultheal.text += "perpect\n";
+            resultMoney += 50;
+        }else if(ratio == 0){
+            resultheal.text += "worst\n";
+            resultMoney += -50;
+        }else if(ratio <= 0.25){
+            resultheal.text += "bad\n";
+            resultMoney += -20;
+        }else if(ratio <= 0.5){
+            resultheal.text += "soso\n";
+            resultMoney += 5;
+        }else if(ratio <= 0.75){
+            resultheal.text += "nice\n";
+            resultMoney += 20;
+        }else{
+            resultheal.text += "nice\n";
+            resultMoney += 30;
+        }
+    }
+    
     // Update is called once per frame
     void Update()
     {
         if (manager.i == 1001)
         {
+            manager.getWoundValue();
             startpainsum = manager.painSum;
-            startinfection = manager.infectionSum;
             canvas.SetActive(false);
             tutorial.SetActive(false);
             mainCamera.transform.position = new Vector3(0, 0, 2);

@@ -22,6 +22,12 @@ public class ItemListSelect : MonoBehaviour
             }
             transform.GetChild(Button.itemSelected).gameObject.SetActive(true);
 
+        }else
+        {
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                transform.GetChild(i).gameObject.SetActive(false); // 각 자식 오브젝트 비활성화
+            }
         }
     }
 }

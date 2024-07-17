@@ -1,7 +1,7 @@
-using Microsoft.Unity.VisualStudio.Editor;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RayFromOneCameraToAnother : MonoBehaviour
 {
@@ -22,6 +22,10 @@ public class RayFromOneCameraToAnother : MonoBehaviour
     public List<string> HealDescription;
     public GameObject maginfier;
     public GameObject Effecter;
+    public float money = 1000;
+    public TextMeshProUGUI Money;
+
+    private int presstime = -10;
 
     public Transform startPoint;// 라인 렌더러 컴포넌트
 
@@ -42,7 +46,6 @@ public class RayFromOneCameraToAnother : MonoBehaviour
         Ray firstRay = firstCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         Debug.DrawRay(firstRay.origin, firstRay.direction * 15.0f, Color.red);
-
         // ���� plane�� ���� ��ǥ�� �������� Ray�� ���ϴ�
         if (Physics.Raycast(firstRay, out hit))
         {
@@ -133,7 +136,7 @@ public class RayFromOneCameraToAnother : MonoBehaviour
                                 lineRenderer.SetPosition(1, endPoint);
                                 
                                 Effecter.SetActive(true);
-                                Effecter.transform.position = secondHit.point;
+                                Effecter.transform.position = secondHit.point + hit.normal * 0.1f;
                                 Effecter.transform.rotation = Quaternion.FromToRotation(Vector3.up, secondHit.normal);
                             }
                         }
@@ -159,26 +162,38 @@ public class RayFromOneCameraToAnother : MonoBehaviour
 
                                 Canvas.SetActive(true);
                                 painText.text = secondHit.transform.GetComponent<Wound>().paintype;
-                                statusText.text = "통증 : " + secondHit.transform.GetComponent<Wound>().status["통증"];
+                                statusText.text = "통증 : " + $"{secondHit.transform.GetComponent<Wound>().status["통증"]:F2}";
                                 if (secondHit.transform.GetComponent<Wound>().status["감염"] != 0)
-                                    statusText.text += "\n감염 : " + secondHit.transform.GetComponent<Wound>().status["감염"];
-                                if (secondHit.transform.GetComponent<Wound>().status["면역력 약화"] != 0)
-                                    statusText.text += "\n면역력 약화 : " + secondHit.transform.GetComponent<Wound>().status["면역력 약화"];
+                                    statusText.text += "\n감염 : " + $"{secondHit.transform.GetComponent<Wound>().status["감염"]:F2}";
+                                if (secondHit.transform.GetComponent<Wound>().status["약화"] != 0)
+                                    statusText.text += "\n약화 : " + $"{secondHit.transform.GetComponent<Wound>().status["약화"]:F2}";
                                 if (secondHit.transform.GetComponent<Wound>().status["경직"] != 0)
-                                    statusText.text += "\n경직 : " + secondHit.transform.GetComponent<Wound>().status["경직"];
-                                if (secondHit.transform.GetComponent<Wound>().status["근육 약화"] != 0)
-                                    statusText.text += "\n근육 약화 : " + secondHit.transform.GetComponent<Wound>().status["근육 약화"];                            }
+                                    statusText.text += "\n경직 : " + $"{secondHit.transform.GetComponent<Wound>().status["경직"]:F2}";
+                                }
+                            if(Input.GetMouseButton(0))
+                            {
+                                ItemUsed(secondHit.transform.GetComponent<Wound>());
+                            }
                             break;
 
-                        default:
-                            Vector3 direction = (secondHit.point - startPoint.position).normalized;
-                            float distance = hit.distance;
-                            Vector3 endPoint = startPoint.position + direction * distance;
-                            // LineRenderer에 시작점과 끝점 설정
-                            lineRenderer.SetPosition(0, startPoint.position);
-                            lineRenderer.SetPosition(1, endPoint);
-                            Effecter.SetActive(false);
-                        lineRenderer.enabled = false;
+                        case "body":
+                            if (Input.GetMouseButton(0))
+                            {
+                                if (ButtonScroll.itemSelected != -1)
+                                {
+                                    Vector3 direction = (secondHit.point - startPoint.position).normalized;
+                                    float distance = Vector3.Distance(startPoint.position, secondHit.point);
+                                    lineRenderer.enabled = true;
+                                    Vector3 endPoint = startPoint.position + direction * distance;
+                                    // LineRenderer에 시작점과 끝점 설정
+                                    lineRenderer.SetPosition(0, startPoint.position);
+                                    lineRenderer.SetPosition(1, endPoint);
+
+                                    Effecter.SetActive(true);
+                                    Effecter.transform.position = secondHit.point + hit.normal * 0.1f;
+                                    Effecter.transform.rotation = Quaternion.FromToRotation(Vector3.up, secondHit.normal);
+                                }
+                            }
                             break;
 
 
@@ -193,6 +208,132 @@ public class RayFromOneCameraToAnother : MonoBehaviour
             
         }else
             Cursor.visible = true;
+    }
+    void ItemUsed(Wound pain)
+    {
+        if (presstime == -10)
+            presstime=ButtonScroll.itemSelected*10;
+        switch(ButtonScroll.itemSelected)
+        {
+            case 0:
+                if (pain.paintype == "화상")
+                {
+                    pain.status["통증"] += -0.1f;
+                    money += -0.01f;
+                }
+                break;
+            case 1:
+                
+                if (pain.paintype == "근육파열" || pain.paintype == "골절" || pain.paintype == "화상")
+                {
+                    pain.status["경직"] += -0.1f;
+                    pain.status["약화"] += -0.1f;
+                    
+                    
+                }
+                money += -0.1f;
+                if (pain.paintype == "화상"&&presstime == ButtonScroll.itemSelected*10+9){
+                    pain.heal();
+                    presstime = -10;
+                }
+                    
+                break;
+            case 2:
+                if (pain.paintype == "근육파열" || pain.paintype == "골절" || pain.paintype == "화상")
+                {
+                    pain.status["통증"] += -0.2f;
+                    
+                    
+                }
+                money += -0.2f;
+                if (pain.paintype == "상처"&&presstime == ButtonScroll.itemSelected*10+9){
+                    pain.heal();
+                    presstime = -10;
+                }
+                break;
+            case 3:
+                money += -0.3f;
+                if (pain.paintype == "골절"&&presstime == ButtonScroll.itemSelected*10+9){
+                    pain.heal();
+                    presstime = -10;
+                }
+                break;
+            case 4:
+                if (pain.paintype == "근육파열" || pain.paintype == "골절")
+                {
+                    pain.status["통증"] += -0.1f;
+                    pain.status["약화"] += -0.1f;
+                }
+                money += 0f;
+                if (pain.paintype == "근육파열"&&presstime == ButtonScroll.itemSelected*10+9){
+                    pain.heal();
+                    presstime = -10;
+                }
+                break;
+            case 5:
+                if (pain.paintype == "근육파열" || pain.paintype == "골절")
+                {
+                    pain.status["경직"] += -0.1f;
+                }
+                money += -0.2f;
+                break;
+            case 6:
+                if (pain.paintype == "화상" || pain.paintype == "상처")
+                {
+                    pain.status["감염"] += -0.1f;
+                    pain.status["통증"] += -0.1f;
+                }
+                money += -0.1f;
+                break;
+            case 7:
+                if (pain.paintype == "근육파열" || pain.paintype == "골절")
+                {
+                    pain.status["경직"] += -0.1f;
+                    pain.status["통증"] += -0.1f;
+                }
+                money += -0.02f;
+                break;
+            case 8:
+                if (pain.paintype == "상처")
+                {
+                    pain.status["약화"] += -0.1f;
+                    pain.status["감염"] += -0.1f;
+                    pain.status["경직"] += -0.1f;
+                }
+                money += -0f;
+                break;
+            case 9:
+                pain.status["약화"] += -0.1f;
+                money += -0.1f;
+                break;
+            case 10:
+                if (pain.paintype == "근육파열")
+                {
+                    pain.status["통증"] += -0.1f;
+                }
+                money += -0.05f;
+                break;
+            case 11:
+                if (pain.paintype == "근육파열" || pain.paintype == "골절")
+                {
+                    pain.status["감염"] += -0.1f;
+                }
+                money += -0.2f;
+                break;
+        }
+        Money.text = "$" + money;
+        if(presstime%10 != 9)
+            presstime+=1;
+        else
+            presstime = -10;
+        if(pain.status["약화"]<0)
+                pain.status["약화"] = 0;
+            if(pain.status["감염"]<0)
+                pain.status["감염"] = 0;
+            if(pain.status["통증"]<0)
+                pain.status["통증"] = 0;
+            if(pain.status["경직"]<0)
+                pain.status["경직"] = 0;
     }
 }
 
