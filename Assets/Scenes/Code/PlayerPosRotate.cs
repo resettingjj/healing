@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerPosRotate : MonoBehaviour
 {
-    public inHospital Animation;
+    public PlayerMove Animation;
     // Start is called before the first frame update
 
     // Update is called once per frame

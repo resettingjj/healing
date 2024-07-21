@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class NewBehaviourScript1 : MonoBehaviour
 {
-    private iniated manager;
+    private GameManager manager;
     Quaternion rotate;
     private int a;
     // Start is called before the first frame update
     void Start()
     {
-        manager = GameObject.Find("manager").GetComponent<iniated>();
+        manager = GameObject.Find("manager").GetComponent<GameManager>();
         rotate = transform.rotation;
     }
 

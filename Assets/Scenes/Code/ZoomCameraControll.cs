@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class fixzoom : MonoBehaviour
+public class ZoomCameraControll : MonoBehaviour
 {
     public GameObject plane;
     private RayFromOneCameraToAnother t;

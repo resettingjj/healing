@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 
-public class Botton : MonoBehaviour
+public class ButtonManager : MonoBehaviour
 {
     public GameObject Magnify;
     public GameObject cloth;
@@ -21,7 +21,7 @@ public class Botton : MonoBehaviour
     public GameObject obj3;
     public GameObject Tutorial;
 
-    public iniated manager;
+    public GameManager manager;
 
     public int Scroll;
     public int itemSelected = -1;

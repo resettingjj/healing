@@ -12,12 +12,12 @@ public class RayFromOneCameraToAnother : MonoBehaviour
     public TextMeshProUGUI painText;
     public GameObject Canvas;
     public LineRenderer lineRenderer;
-    private iniated manager;
+    private GameManager manager;
     private Component Outline;
     public Vector3 second_camera_trandform;
     public Vector3 second_camera_start;
     public Vector3 rayDirection;
-    private Botton ButtonScroll;
+    private ButtonManager ButtonScroll;
     public List<string> HealTitle;
     public List<string> HealDescription;
     public GameObject maginfier;
@@ -31,8 +31,8 @@ public class RayFromOneCameraToAnother : MonoBehaviour
 
     private void Start()
     {
-        manager = GameObject.Find("manager").GetComponent<iniated>();
-        ButtonScroll = GameObject.Find("Display").GetComponent<Botton>();
+        manager = GameObject.Find("manager").GetComponent<GameManager>();
+        ButtonScroll = GameObject.Find("Display").GetComponent<ButtonManager>();
         Outline = GameObject.Find("notebook").transform;
         rayDirection = Vector3.forward;
         lineRenderer = GetComponent<LineRenderer>();
@@ -208,7 +208,7 @@ public class RayFromOneCameraToAnother : MonoBehaviour
             
         }else
             Cursor.visible = true;
-        Money.text = "$" + money;
+        
     }
     void ItemUsed(Wound pain)
     {

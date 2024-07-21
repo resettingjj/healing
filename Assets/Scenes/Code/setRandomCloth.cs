@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class NewBehaviourScript : MonoBehaviour
 {
-    private iniated manager;
+    private GameManager manager;
 
 
     public int percentage;
@@ -12,7 +12,7 @@ public class NewBehaviourScript : MonoBehaviour
     void OnEnable()
     {
         
-        manager = GameObject.Find("manager").GetComponent<iniated>();
+        manager = GameObject.Find("manager").GetComponent<GameManager>();
         if (!manager.isbokje)
         {
             for (int i = 0; i < transform.childCount; i++)

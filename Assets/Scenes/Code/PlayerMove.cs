@@ -4,13 +4,13 @@ using UnityEditor;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
-public class inHospital : MonoBehaviour
+public class PlayerMove : MonoBehaviour
 {
     public GameObject Camera;
     Animator animator;
     public  float speed;
     public float dragspeed;
-    private iniated statusController;
+    private GameManager statusController;
     public int stat;
     public int animationStopTime;
     public bool stopAnimation;
@@ -24,7 +24,7 @@ public class inHospital : MonoBehaviour
     // Update is called once per frame
     public void Hospital()
     {
-        statusController = GameObject.Find("manager").GetComponent<iniated>();
+        statusController = GameObject.Find("manager").GetComponent<GameManager>();
         animator = GetComponentInChildren<Animator>();
         stat = statusController.status;
         if (stat == 1)

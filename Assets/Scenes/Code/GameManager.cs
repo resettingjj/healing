@@ -5,8 +5,9 @@ using TMPro;
 using System.Linq;
 using UnityEngine.UI;
 using UnityEditor.SceneManagement;
+using Unity.VisualScripting;
 
-public class iniated : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
     public GameObject player;
     public int status;
@@ -22,40 +23,54 @@ public class iniated : MonoBehaviour
     private string printer;
     private int k;
     public TextMeshProUGUI checkList;
-    private List<string> message;
     public string fainThreeList;
     public  GameObject originPlayer;
     private GameObject copyPlayer;
-    
     public float stress = 100;
     public float stressful = 1;
     public Slider slice;
-
     public float painSum;
-    public int completeWound;
+    public float completeWound;
     public float infectionSum;
     public List<bool> checking;
-    public int sumCheck;
+    public float sumCheck;
     public int stage;
-
-    public int woundCount;
+    public RayFromOneCameraToAnother plane;
+    public TextMeshProUGUI woundstat;
+    public TextMeshProUGUI resultheal;
+    public TextMeshProUGUI resultmoney;
+    private int resultMoney;
+    private float startpainsum;
     // Start is called before the first frame update
 
     public void settingGame()
     {
-        woundCount = 0;
         originPlayer = Instantiate(player, Vector3.zero, Quaternion.identity);
         originPlayer.name = "originPlayer" + stage;
         status = 0;
         i=0;
         k=0;
-        for (int i = 0; woundCount < 6; i++)
+        for (int c = 0; c < 6;)
         {
             float angle = Random.Range(0f, 360f);
-            Vector3 targetPosition = Quaternion.Euler(0, angle, 0) * Vector3.forward * Random.Range(3f, 5f);
-            Wound set = Instantiate(wound, targetPosition, Quaternion.identity);
-            set.name = "wound"+ i;
-            pain.Add(set);
+            Vector3 targetPosition = Quaternion.Euler(0, angle, 0) * Vector3.forward * Random.Range(3f, 6f);
+            targetPosition = new Vector3(targetPosition.x, Random.Range(-0.88f, 0.88f), targetPosition.z);
+            LayerMask mask = LayerMask.GetMask("body");
+            RaycastHit hit;
+            if (Physics.Raycast(targetPosition, new Vector3(0,targetPosition.y,0) - targetPosition, out hit, 20f, mask))
+            {
+                Wound set = Instantiate(wound, hit.point + hit.normal * 0.01f, Quaternion.FromToRotation(Vector3.up, hit.normal));
+                set.gameObject.transform.parent = hit.transform;
+                set.name = "wound" + c;
+                string woundPosName = hit.collider.gameObject.name;
+                if (hit.point.z > 0)
+                    woundPosName = woundPosName + "_pront";
+                else
+                    woundPosName = woundPosName + "_back";
+                set.pain = woundPosName;
+                pain.Add(set);
+                c++;
+            }
         }
         
         isbokje = true;
@@ -69,17 +84,55 @@ public class iniated : MonoBehaviour
         }
         copyPlayer = Instantiate(originPlayer, new Vector3(100,100,100), Quaternion.identity);
         copyPlayer.name = "copyPlayer" + stage ;
+        startpainsum = pain.Sum(dict => dict.status.ContainsKey("통증") ? dict.status["통증"] : 0);
     }
-    public void getWoundValue()
+    public void resetGame()
     {
         infectionSum = pain.Sum(dict => dict.status.ContainsKey("감염") ? dict.status["감염"] : 0);
         painSum = pain.Sum(dict => dict.status.ContainsKey("통증") ? dict.status["통증"] : 0);
         completeWound = pain.Count(dict => dict.paintype == "치료됨");
         sumCheck = checking.Count(a => a == true);
-    }
-    public void resetGame()
-    {
-        getWoundValue();
+        resultheal.text = "\n";
+        resultMoney = 0;
+        evaluation(completeWound / pain.Count);
+        evaluation(sumCheck / 3.00f);
+        if (infectionSum >= 9)
+        {
+            resultheal.text += "worst\n";
+            resultMoney += -50;
+        }
+        else if (infectionSum >= 7)
+        {
+            resultheal.text += "bad\n";
+            resultMoney += -20;
+        }
+        else if (infectionSum >= 5)
+        {
+            resultheal.text += "soso\n";
+            resultMoney += 5;
+        }
+        else if (infectionSum >= 3)
+        {
+            resultheal.text += "nice\n";
+            resultMoney += 2;
+        }
+        else if (infectionSum >= 1)
+        {
+            resultheal.text += "good\n";
+            resultMoney += 30;
+        }
+        else
+        {
+            resultheal.text += "perpect\n";
+            resultMoney += 50;
+        }
+        resultheal.text += "\n";
+        evaluation((startpainsum - painSum) / startpainsum);
+        evaluation((stress) / 66);
+        resultmoney.text = "정산 금액 : " + resultMoney + "$";
+        woundstat.text = "\n 상처 치료 : (" + completeWound + "/" + pain.Count + ")\n치명적인 상처 : (" + sumCheck + "/3)\n상처 감염도 : " + Mathf.FloorToInt(infectionSum) + "\n\n 통증 완화 : (" + Mathf.FloorToInt(painSum) + "/" + startpainsum + ")\n스트레스 수치 : (" + Mathf.FloorToInt(stress) + "/100)";
+
+        plane.money += resultMoney;
         checking[0] = false;
         checking[1] = false;
         checking[2] = false;
@@ -94,7 +147,42 @@ public class iniated : MonoBehaviour
         settingGame();
 
     }
-    private void Start()
+    
+    
+    void evaluation(float ratio)
+{
+    if (ratio >= 1)
+    {
+        resultheal.text += "perpect\n";
+        resultMoney += 50;
+    }
+    else if (ratio == 0)
+    {
+        resultheal.text += "worst\n";
+        resultMoney += -50;
+    }
+    else if (ratio < 0.25)
+    {
+        resultheal.text += "bad\n";
+        resultMoney += -20;
+    }
+    else if (ratio < 0.5)
+    {
+        resultheal.text += "soso\n";
+        resultMoney += 5;
+    }
+    else if (ratio < 0.75)
+    {
+        resultheal.text += "nice\n";
+        resultMoney += 20;
+    }
+    else
+    {
+        resultheal.text += "good\n";
+        resultMoney += 30;
+    }
+}
+private void Start()
     {
         keyPain.Add("neck_pront", "목");
         keyPain.Add("neck_back", "목");

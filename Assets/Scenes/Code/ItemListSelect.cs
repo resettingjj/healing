@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class ItemListSelect : MonoBehaviour
 {
-    private Botton Button;
+    private ButtonManager Button;
     // Start is called before the first frame update
     void Start()
     {
-        Button = GameObject.Find("Display").GetComponent<Botton>();
+        Button = GameObject.Find("Display").GetComponent<ButtonManager>();
     }
 
     // Update is called once per frame
