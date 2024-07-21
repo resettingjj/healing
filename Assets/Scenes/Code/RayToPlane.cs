@@ -208,6 +208,7 @@ public class RayFromOneCameraToAnother : MonoBehaviour
             
         }else
             Cursor.visible = true;
+        Money.text = "$" + money;
     }
     void ItemUsed(Wound pain)
     {
@@ -321,7 +322,7 @@ public class RayFromOneCameraToAnother : MonoBehaviour
                 money += -0.2f;
                 break;
         }
-        Money.text = "$" + money;
+        
         if(presstime%10 != 9)
             presstime+=1;
         else

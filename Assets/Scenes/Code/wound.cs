@@ -48,14 +48,14 @@ public class Wound : MonoBehaviour
                 status.Add("감염", Random.Range(-5, 23)/7);
                 status.Add("약화", Random.Range(-2, 18)/3);
                 status.Add("경직", Random.Range(-1, 10)/2);
-
-
+                print(gameObject.name + hit.collider.gameObject);
+                manager.woundCount++;
                 transform.parent = hit.collider.gameObject.transform;
                 transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
             }
             else
             {
-                Destroy(gameObject);
+                //gameObject.SetActive(false);
             }
             Collider1.enabled = true;
             

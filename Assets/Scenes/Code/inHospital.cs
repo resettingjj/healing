@@ -29,7 +29,7 @@ public class inHospital : MonoBehaviour
         stat = statusController.status;
         if (stat == 1)
         {
-            transform.parent = Camera.transform;
+            transform.parent = GameObject.Find("Main Camera").transform;
             transform.localScale = Vector3.one * 10.0f;
             transform.transform.localPosition = new Vector3(-43.9f, -6.23f, 100.0f);
             // �ڽ� ������Ʈ�� ��� ������Ʈ�� ��Ȱ��ȭ

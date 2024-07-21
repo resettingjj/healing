@@ -91,7 +91,7 @@ public class Botton : MonoBehaviour
             }
             else
             {
-                cloth.SetActive(false);
+                manager.originPlayer.transform.GetChild(0).GetChild(2).gameObject.SetActive(false);
                 manager.stressful += 1f;
             }
                 
@@ -103,8 +103,8 @@ public class Botton : MonoBehaviour
                 itemSelected = -1;
             else
             {
-                manager.stressful += -1f; 
-                cloth.SetActive(true);
+                manager.stressful += -1f;
+                manager.originPlayer.transform.GetChild(0).GetChild(2).gameObject.SetActive(true);
             }
         }
         ColorChanging(button2,click2);
@@ -166,7 +166,7 @@ public class Botton : MonoBehaviour
             ColorChanging(button3,click3);
         }else
         {
-            rotater.reposition();
+            manager.originPlayer.transform.GetChild(0).GetChild(1).GetChild(0).gameObject.GetComponent<PlayerPosRotate>().reposition();
         }
     }
     

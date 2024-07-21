@@ -70,13 +70,13 @@ public class CameraController : MonoBehaviour
         }
         resultheal.text += "\n";
         evaluation((startpainsum-manager.painSum)/startpainsum);
-        evaluation((manager.stress)/100);
+        evaluation((manager.stress)/66);
         resultmoney.text = "정산 금액 : " + resultMoney+"$";
         plane.money += resultMoney;
     }
     void evaluation(float ratio)
     {
-        if (ratio == 1)
+        if (ratio >= 1)
         {
             resultheal.text += "perpect\n";
             resultMoney += 50;

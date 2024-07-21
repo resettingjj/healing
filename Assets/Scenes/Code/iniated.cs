@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using System.Linq;
 using UnityEngine.UI;
+using UnityEditor.SceneManagement;
 
 public class iniated : MonoBehaviour
 {
@@ -23,6 +24,7 @@ public class iniated : MonoBehaviour
     public TextMeshProUGUI checkList;
     private List<string> message;
     public string fainThreeList;
+    public  GameObject originPlayer;
     private GameObject copyPlayer;
     
     public float stress = 100;
@@ -34,14 +36,20 @@ public class iniated : MonoBehaviour
     public float infectionSum;
     public List<bool> checking;
     public int sumCheck;
+    public int stage;
+
+    public int woundCount;
     // Start is called before the first frame update
 
     public void settingGame()
     {
+        woundCount = 0;
+        originPlayer = Instantiate(player, Vector3.zero, Quaternion.identity);
+        originPlayer.name = "originPlayer" + stage;
         status = 0;
         i=0;
         k=0;
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; woundCount < 6; i++)
         {
             float angle = Random.Range(0f, 360f);
             Vector3 targetPosition = Quaternion.Euler(0, angle, 0) * Vector3.forward * Random.Range(3f, 5f);
@@ -53,19 +61,20 @@ public class iniated : MonoBehaviour
         isbokje = true;
         status = 1;
         pain.RemoveAll(obj => obj.pain == "");
-        pain = pain.OrderByDescending(obj => obj.GetComponent<Wound>().status["통증"]).ToList();
+        pain = pain.OrderByDescending(obj => obj.status["통증"]).ToList();
         painList.Clear();
         for (int a = 0;a < pain.Count;a++)
         {
-            painList.Add(pain[a].GetComponent<Wound>().pain);
+            painList.Add(pain[a].pain);
         }
-        copyPlayer = Instantiate(player, Vector3.zero, Quaternion.identity);
+        copyPlayer = Instantiate(originPlayer, new Vector3(100,100,100), Quaternion.identity);
+        copyPlayer.name = "copyPlayer" + stage ;
     }
     public void getWoundValue()
     {
-        infectionSum = pain.Sum(dict => dict.GetComponent<Wound>().status.ContainsKey("감염") ? dict.GetComponent<Wound>().status["감염"] : 0);
-        painSum = pain.Sum(dict => dict.GetComponent<Wound>().status.ContainsKey("통증") ? dict.GetComponent<Wound>().status["통증"] : 0);
-        completeWound = pain.Count(dict => dict.GetComponent<Wound>().paintype == "치료됨");
+        infectionSum = pain.Sum(dict => dict.status.ContainsKey("감염") ? dict.status["감염"] : 0);
+        painSum = pain.Sum(dict => dict.status.ContainsKey("통증") ? dict.status["통증"] : 0);
+        completeWound = pain.Count(dict => dict.paintype == "치료됨");
         sumCheck = checking.Count(a => a == true);
     }
     public void resetGame()
@@ -74,16 +83,14 @@ public class iniated : MonoBehaviour
         checking[0] = false;
         checking[1] = false;
         checking[2] = false;
-        Destroy(copyPlayer);
-        foreach(Wound scratch in pain)
-            Destroy(scratch.gameObject);
+        copyPlayer.SetActive(false);
+        originPlayer.SetActive(false);
         pain.Clear();
         painList.Clear();
         status = 0;
         fainThreeList = "";
         isbokje = false;
-        player.SetActive(false);
-        player.SetActive(true);
+        stage += 1;
         settingGame();
 
     }
