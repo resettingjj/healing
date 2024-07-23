@@ -43,6 +43,7 @@ public class RayFromOneCameraToAnother : MonoBehaviour
     }
     void Update()
     {
+        Money.text = "$" + money;
         Ray firstRay = firstCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         Debug.DrawRay(firstRay.origin, firstRay.direction * 15.0f, Color.red);
